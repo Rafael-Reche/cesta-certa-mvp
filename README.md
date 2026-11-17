@@ -57,3 +57,11 @@ Todo PR usa o modelo em `.github/pull_request_template.md` e passa pelo CI antes
 
 ## Segurança
 Não registre senhas, chaves ou dados pessoais reais. Em produção defina `DJANGO_ENV=production` e `DJANGO_SECRET_KEY`.
+
+## Publicação (Render)
+
+O arquivo `render.yaml` descreve o serviço web e o PostgreSQL gratuito do Render. Passos: criar um *Blueprint* apontando para este repositório e informar a variável `DEMO_SENHA` (senha dos usuários **fictícios** de demonstração; nunca vai para o código).
+
+- Variáveis: `DJANGO_ENV=production`, `DJANGO_SECRET_KEY` (gerada pelo Render), `DATABASE_URL` (ligada ao banco), `DEMO_SENHA`; opcional `DJANGO_ADMIN_URL` (endereço do `/admin/`).
+- Monitoramento: a rota pública `/saude/` responde 200 com o banco ativo e 503 se o banco falhar; um monitor externo (UptimeRobot) a consulta a cada 5 minutos.
+- Limites do plano gratuito: o serviço dorme após 15 minutos sem acesso (o monitor evita isso); o PostgreSQL gratuito expira 30 dias após a criação (renovar ou migrar para plano pago para uso contínuo).
