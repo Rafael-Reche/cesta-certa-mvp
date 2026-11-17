@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
@@ -26,7 +28,7 @@ class EntregaForm(forms.Form):
     familia = forms.CharField(
         label="Família (código ou documento)",
         max_length=20,
-        widget=forms.TextInput(attrs={"autocomplete": "off"}),
+        widget=forms.TextInput(attrs={"autocomplete": "off", "aria-describedby": "dica-familia"}),
     )
     lote = LoteRadioField(
         label="Lote a retirar",
@@ -50,7 +52,9 @@ class EntregaForm(forms.Form):
 
     def clean_familia(self):
         valor = self.cleaned_data["familia"].strip()
-        familia = Familia.objects.filter(Q(codigo=valor) | Q(documento=valor), ativa=True).first()
+        # Aceita F0042, f-0042 ou f0042 como F-0042.
+        codigo = re.sub(r"^([A-Za-z])-?(\d+)$", lambda m: m.group(1).upper() + "-" + m.group(2), valor)
+        familia = Familia.objects.filter(Q(codigo=codigo) | Q(documento=valor), ativa=True).first()
         if familia is None:
             raise forms.ValidationError("Família não encontrada. Confira o código ou o documento.")
         return familia
