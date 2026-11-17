@@ -1,0 +1,26 @@
+{% extends "estoque/base.html" %}
+{% block titulo %}Registrar entrega{% endblock %}
+{% block conteudo %}
+<h2>Registrar entrega</h2>
+<form method="post" novalidate class="campo" style="gap:14px">
+  {% csrf_token %}
+  <div class="campo">
+    <label for="{{ form.familia.id_for_label }}">1. Família (código ou documento)</label>
+    {{ form.familia }}
+    {% for e in form.familia.errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> {{ e }}</p>{% endfor %}
+  </div>
+  <fieldset class="campo">
+    <legend>2. Lote a retirar</legend>
+    {% for radio in form.lote %}<label class="lote" for="{{ radio.id_for_label }}">{{ radio.tag }} <span>{{ radio.choice_label }}</span></label>{% empty %}<p class="nota">Nenhum lote disponível.</p>{% endfor %}
+    {% for e in form.lote.errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> {{ e }}</p>{% endfor %}
+  </fieldset>
+  <div class="campo">
+    <label for="{{ form.quantidade_kg.id_for_label }}">3. Quantidade (kg)</label>
+    {{ form.quantidade_kg }}
+    {% for e in form.quantidade_kg.errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> {{ e }}</p>{% endfor %}
+  </div>
+  <button class="btn primario" type="submit">Confirmar entrega</button>
+</form>
+<a class="btn" href="{% url 'painel' %}">Voltar ao painel</a>
+<a class="btn" href="{% url 'alertas' %}">Ver alertas</a>
+{% endblock %}

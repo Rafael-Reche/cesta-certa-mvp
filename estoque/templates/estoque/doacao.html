@@ -1,0 +1,18 @@
+{% extends "estoque/base.html" %}
+{% block titulo %}Registrar doação{% endblock %}
+{% block conteudo %}
+<h2>Registrar doação</h2>
+<form method="post" novalidate class="campo" style="gap:14px">
+  {% csrf_token %}
+  {% for e in form.non_field_errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> {{ e }}</p>{% endfor %}
+  {% for campo in form %}
+  <div class="campo">
+    <label for="{{ campo.id_for_label }}">{{ campo.label }}</label>
+    {{ campo }}
+    {% for e in campo.errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> {{ e }}</p>{% endfor %}
+  </div>
+  {% endfor %}
+  <button class="btn primario" type="submit">Salvar doação</button>
+</form>
+<a class="btn" href="{% url 'painel' %}">Voltar ao painel</a>
+{% endblock %}

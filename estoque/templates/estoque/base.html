@@ -1,0 +1,29 @@
+{% load static %}<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Cesta Certa{% endblock %} · Cesta Certa</title>
+  <link rel="stylesheet" href="{% static 'estoque/app.css' %}">
+</head>
+<body>
+<header>
+  <h1>Cesta Certa</h1>
+  <p>Associação Mãos Unidas</p>
+</header>
+<main>
+  <p class="chip" id="conexao" role="status"><span aria-hidden="true">●</span> <span id="conexao-texto">Online</span></p>
+  {% if messages %}{% for m in messages %}<p class="ok" role="status"><span aria-hidden="true">✔</span> {{ m }}</p>{% endfor %}{% endif %}
+  {% block conteudo %}{% endblock %}
+</main>
+<script>
+  // Indicador simples de conexão. A fila offline (RF06) ainda não está implementada.
+  function atualizarConexao() {
+    document.getElementById("conexao-texto").textContent = navigator.onLine ? "Online" : "Offline (registro offline ainda não disponível)";
+  }
+  window.addEventListener("online", atualizarConexao);
+  window.addEventListener("offline", atualizarConexao);
+  atualizarConexao();
+</script>
+</body>
+</html>
