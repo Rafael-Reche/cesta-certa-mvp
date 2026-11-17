@@ -1,0 +1,14 @@
+{% extends "estoque/base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<h2>Entrar</h2>
+{% if form.errors %}<p class="erro" role="alert"><span aria-hidden="true">⚠</span> Usuário ou senha inválidos</p>{% endif %}
+<form method="post" class="campo" style="gap:14px">
+  {% csrf_token %}
+  <div class="campo"><label for="{{ form.username.id_for_label }}">Usuário</label>{{ form.username }}</div>
+  <div class="campo"><label for="{{ form.password.id_for_label }}">Senha</label>{{ form.password }}</div>
+  <input type="hidden" name="next" value="{{ next }}">
+  <button class="btn primario" type="submit">Entrar</button>
+</form>
+<p class="nota">Após 5 tentativas erradas, o acesso fica bloqueado por 15 minutos.</p>
+{% endblock %}

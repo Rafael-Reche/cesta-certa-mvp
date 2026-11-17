@@ -1,0 +1,14 @@
+{% extends "estoque/base.html" %}
+{% block titulo %}Painel{% endblock %}
+{% block conteudo %}
+<div>
+  <p style="font-size:20px;font-weight:700">Olá, {{ request.user.username }}</p>
+  <p class="nota">Perfil: {{ request.user.get_perfil_display }}</p>
+</div>
+<a class="btn primario" href="{% url 'entrega' %}">Registrar entrega</a>
+<a class="btn" href="{% url 'doacao' %}">Registrar doação</a>
+<a class="btn" href="{% url 'alertas' %}">Ver alertas{% if qtd_alertas %}<span class="selo">{{ qtd_alertas }} lote{{ qtd_alertas|pluralize }}</span>{% endif %}</a>
+{% if qtd_alertas %}<p class="nota">{{ qtd_alertas }} lote{{ qtd_alertas|pluralize }} com alerta de validade. Toque em "Ver alertas" para priorizar.</p>{% endif %}
+{% if request.user.e_coordenadora %}<a class="btn" href="/admin/">Cadastro de famílias e relatório</a>{% endif %}
+<form method="post" action="{% url 'sair' %}">{% csrf_token %}<button class="btn" type="submit">Sair</button></form>
+{% endblock %}
