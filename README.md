@@ -1,6 +1,6 @@
 # Cesta Certa
 
-Sistema de controle de estoque e entregas para a **Associação Mãos Unidas** (organização fictícia usada na disciplina Projeto de Software, Cruzeiro do Sul).
+Sistema de controle de estoque e entregas para a **Associação Mãos Unidas** (projeto da disciplina Projeto de Software, Cruzeiro do Sul).
 
 **Problema:** o controle em cadernos faz perder cerca de 40 kg de hortifrúti por mês por vencimento e consome 2 dias por mês na prestação de contas.
 **ODS:** 2 (Fome Zero e Agricultura Sustentável), meta 2.1, com apoio à meta 12.3 do ODS 12.

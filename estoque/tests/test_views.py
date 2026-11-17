@@ -93,6 +93,21 @@ class EntregaTests(BaseViewTest):
         for rotulo in ("Família (código ou documento)", "Lote a retirar", "Quantidade (kg)", "Confirmar entrega", "Voltar ao painel"):
             self.assertContains(resposta, rotulo)
 
+    def test_tela_mostra_exemplo_do_codigo_da_familia(self):
+        resposta = self.client.get(reverse("entrega"))
+        self.assertContains(resposta, "Exemplo: F-0042")
+
+    def test_codigo_da_familia_aceita_sem_hifen_e_em_minusculo(self):
+        dados = {"familia": "f0042", "lote": self.lote.pk, "quantidade_kg": "2"}
+        resposta = self.client.post(reverse("entrega"), dados, follow=True)
+        self.assertContains(resposta, "Entrega registrada")
+        self.assertEqual(Entrega.objects.count(), 1)
+
+    def test_confirmacao_mostra_resumo_da_entrega(self):
+        dados = {"familia": "F-0042", "lote": self.lote.pk, "quantidade_kg": "5"}
+        resposta = self.client.post(reverse("entrega"), dados, follow=True)
+        self.assertContains(resposta, "Entrega registrada: família F-0042 · lote H-07 Tomate · 5 kg.")
+
 
 class AlertasTests(BaseViewTest):
     def test_lista_ordenada_com_texto_do_alerta(self):

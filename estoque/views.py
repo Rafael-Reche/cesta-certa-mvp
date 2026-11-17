@@ -8,6 +8,7 @@ from .models import LoteEstoque
 from .services import (
     NIVEL_OK,
     RegraDeNegocioErro,
+    formatar_kg,
     itens_de_alerta,
     registrar_doacao,
     registrar_entrega,
@@ -37,7 +38,11 @@ def entrega(request):
         except RegraDeNegocioErro as erro:
             form.add_error("quantidade_kg", str(erro))
         else:
-            messages.success(request, "Entrega registrada.")
+            dados = form.cleaned_data
+            messages.success(
+                request,
+                f"Entrega registrada: família {dados['familia'].codigo} · lote {dados['lote'].codigo} {dados['lote'].produto} · {formatar_kg(dados['quantidade_kg'])} kg.",
+            )
             return redirect("entrega")
     return render(request, "estoque/entrega.html", {"form": form})
 
